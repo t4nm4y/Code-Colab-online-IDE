@@ -1,3 +1,26 @@
+.resizer {
+  position: relative;
+  cursor: col-resize;
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 5px;
+  background-color: #ffffff30;
+}
+.MiddleDiv {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  right:170px;
+  /* bottom: 0px; */
+  min-width: 300px;
+  height: calc(100vh - 40px);
+  /* overflow-x: hidden; */
+}
+.editorWrap{
+  width: 100%;
+}
+
 .ResizableBox {
   display: flex;
   flex-direction: column;
@@ -6,7 +29,7 @@
   border-radius: 5px;
   overflow: hidden;
   width: 100%;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 40px);
 }
 .InputBox {
   flex: 1;
@@ -149,9 +172,10 @@
     flex-direction: column;
   }
   .mainWrap {
-    display: grid;
-    /* 1fr all the space available , 1fr for left column(editor), and 230px for the right column(side bar)*/
-    grid-template-columns: 1fr 400px 150px ;
+    /* display: grid;
+    // 1fr all the space available , 1fr for left column(editor), and 230px for the right column(side bar)
+    grid-template-columns: 1fr 400px 150px ; */
+    display: flex;
   }
   
   .aside {
@@ -160,6 +184,7 @@
     color: #fff;
     display: flex;
     flex-direction: column;
+    width:150px;
   }
   .asideInner {
     flex: 1;
@@ -167,20 +192,20 @@
   
   .clientsList {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     /* gap: 20px; */
-    gap: 15px;
+    gap: 10px;
   }
   
   .client {
     display: flex;
     align-items: center;
-    flex-direction: column;
+    justify-content: center;
+    flex-direction: row;
     /* font-weight: bold; */
-  }
-  .userName {
-    margin-top: 10px;
   }
   
   .logo {

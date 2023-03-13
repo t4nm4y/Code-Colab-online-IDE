@@ -23,10 +23,12 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
-    
+
     const [codeOutput, setData] = useState(null);
     const [inputText, setInputText] = useState("");
     // const [outputText, setOutputText] = useState("");
+
+    const ref = useRef(null);
 
     useEffect(() => {
         const init = async () => {
@@ -106,17 +108,17 @@ const EditorPage = () => {
     function leaveRoom() {
         reactNavigator('/');
     }
-//---------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------
     // const [codeOutput, setData] = useState(null);
 
     function getOutput() {
         const selectedIndex = document.getElementById("langOption").selectedIndex;
         const currLang = document.getElementById("langOption").options[selectedIndex].label;
-        
+
         const data = qs.stringify({
             'code': codeRef.current,
             'language': currLang,
-            'input':inputText
+            'input': inputText
         });
 
         const config = {
@@ -130,10 +132,10 @@ const EditorPage = () => {
         axios(config)
             .then(function (response) {
                 // console.log("resp: ",response);
-                if(response.data.error){
-                    setData("Error:\n"+response.data.error)
+                if (response.data.error) {
+                    setData("Error:\n" + response.data.error)
                 }
-                else{
+                else {
                     setData(response.data.output)
                 }
             })
@@ -150,7 +152,35 @@ const EditorPage = () => {
     if (!location.state) {
         return <Navigate to="/" />;
     }
-    
+
+    let x = 0;
+    let w = 0;
+    const ele = document.getElementById('resizeMe');
+    const mouseDownHandler = (e) => {
+        // Get the current mouse position
+        x = e.clientX;
+
+        // Calculate the dimension of element
+        const styles = window.getComputedStyle(ele);
+
+        w = parseInt(styles.width);
+        // Attach the listeners to `document`
+        ref.current.addEventListener('mousemove', mouseMoveHandler);
+        ref.current.addEventListener('mouseup', mouseUpHandler);
+    };
+
+    const mouseMoveHandler = (e) => {
+        const dx = x - e.clientX;
+        ele.style.width = `${w + dx}px`;
+    };
+
+    const mouseUpHandler = () => {
+        // Remove the handlers of `mousemove` and `mouseup`
+        ref.current.removeEventListener('mousemove', mouseMoveHandler);
+        ref.current.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+
     return (
         <div className='main'>
             <div className='upperPanel'>
@@ -165,7 +195,7 @@ const EditorPage = () => {
                 </div>
                 <PlayFill className='runBtn' size={30} onClick={runCode} />
             </div>
-            <div className="mainWrap">
+            <div ref={ref} className="mainWrap">
                 <div className="editorWrap">
                     <Editor
                         socketRef={socketRef}
@@ -180,22 +210,25 @@ const EditorPage = () => {
                         }}
                     />
                 </div>
+                <div id="resizeMe" className="MiddleDiv">
+                    <div className="resizer" onMouseDown={mouseDownHandler}> </div>
+                    <div className="ResizableBox">
+                        <div className="InputBox">
+                            <textarea className='textArea'
+                                type="text"
+                                value={inputText}
 
-                <div className="ResizableBox">
-                    <div className="InputBox">
-                        <textarea className='textArea'
-                            type="text"
-                            value={inputText}
-                            onChange={(e) => setInputText(e.target.value)}
-                            placeholder="Enter input text"
-                        />
-                    </div>
-                    <div className="OutputBox">
-                        <textarea className='textArea'
-                            value={codeOutput}
-                            placeholder="Output text will appear here"
-                            readOnly
-                        />
+                                onChange={(e) => setInputText(e.target.value)}
+                                placeholder="Enter input text"
+                            />
+                        </div>
+                        <div className="OutputBox">
+                            <textarea className='textArea'
+                                value={codeOutput}
+                                placeholder="Output text will appear here"
+                                readOnly
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="aside">
