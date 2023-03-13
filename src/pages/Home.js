@@ -36,39 +36,41 @@ const Home = () => {
         }
     };
 
-  return (
-    <div className="homePageWrapper">
-        <div className="formWrapper">
-            <img className="homePageLogo" src="/icon.png" alt="code-sync-logo"/>
-           
-            <div className="inputGroup">
-                <input
-                    type="text"
-                    className="inputBox"
-                    placeholder="USERNAME"
-                    onChange={(e) => setUsername(e.target.value)}
-                    value={username}
-                    onKeyUp={handleInputEnter}
-                />
-                <input
-                    type="text"
-                    className="inputBox"
-                    placeholder="ROOM ID"
-                    onChange={(e) => setRoomId(e.target.value)}
-                    value={roomId}
-                    onKeyUp={handleInputEnter}
-                />
-                <button className="btn joinBtn" onClick={joinRoom}>Join</button>
-                <span className="createInfo">
-                    Create: &nbsp;
-                    <a href="" className="NewRoomBtn" onClick={createNewRoom}> 
-                        New Room
-                    </a>
-                </span> 
+    return (
+        <div className="homePageWrapper">
+            <div className="formWrapper">
+                <img className="homePageLogo" src="/icon.png" alt="code-sync-logo" />
+                <h3>&emsp;&emsp;&ensp;Online Real-time Collaborative IDE!</h3>
+                <div className="inputGroup">
+                    <input
+                        type="text"
+                        className="inputBox"
+                        placeholder="USERNAME"
+                        onChange={(e) => setUsername(e.target.value)}
+                        value={username}
+                        onKeyUp={handleInputEnter}
+                    />
+                    <input
+                        type="text"
+                        className="inputBox"
+                        placeholder="ROOM ID"
+                        onChange={(e) => setRoomId(e.target.value)}
+                        value={roomId}
+                        onKeyUp={handleInputEnter}
+                    />
+                    <button className="btn joinBtn" onClick={joinRoom}>Join</button>
+                    <span className="createInfo">
+                        Create: &nbsp;
+                        <a href="" className="NewRoomBtn" onClick={createNewRoom}>
+                            New Room
+                        </a>
+                    </span>
+                </div>
             </div>
+            <br />
+            <h4>Join a room with your friends and start coding!</h4>
         </div>
-    </div>
-  )
+    )
 }
 
 export default Home

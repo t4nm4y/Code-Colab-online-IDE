@@ -54,6 +54,7 @@
 /* ----------------------------------------------------------------------- */
 .homePageWrapper {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #fff;
@@ -100,7 +101,7 @@
   
   .homePageLogo {
     height: 80px;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
   }
   
   .inputBox {
