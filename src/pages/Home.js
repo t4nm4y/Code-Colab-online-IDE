@@ -11,7 +11,10 @@ const Home = () => {
     const createNewRoom = (e) => {
         e.preventDefault();
         //generating a 4 digit random no. bt 1000, 9999
-        const id = Math.floor(Math.random() * 9000 + 1000);
+        // const id = Math.floor(Math.random() * 9000 + 1000);
+
+        // generating 5 digit random string containing alphabets and numbers
+        const id=Math.random().toString(36).substring(2,7);
         setRoomId(id);
         toast.success('Created a new room');
     };

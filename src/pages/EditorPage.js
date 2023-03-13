@@ -145,7 +145,12 @@ const EditorPage = () => {
     };
 
     function runCode() {
+        if(langRef.current){
         getOutput();
+        }
+        else{
+            alert("Please select a language!")
+        }
     }
 
     //if don't get the usename as state, then we will redirect it back to the home page
