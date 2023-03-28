@@ -11,7 +11,7 @@ import 'codemirror/addon/edit/closebrackets';
 
 import ACTIONS from '../Actions';
 
-const Editor = ({ socketRef, roomId, editorRef, onCodeChange }) => {
+const Editor = ({ socketRef, roomId, editorRef, onLangChange, onCodeChange }) => {
     // const editorRef = useRef(null);
     useEffect(() => {
         async function init() {
@@ -20,7 +20,7 @@ const Editor = ({ socketRef, roomId, editorRef, onCodeChange }) => {
                 document.getElementById('realtimeEditor'),
                 {
                     // mode: { name: 'javascript', json: true },
-                    mode: 'text/x-c++src',
+                    mode: null,
                     theme: 'dracula',
                     autoCloseTags: true,
                     autoCloseBrackets: true,
@@ -46,10 +46,12 @@ const Editor = ({ socketRef, roomId, editorRef, onCodeChange }) => {
             });
             editorRef.current.on('optionChange',(instance)=> {
                     // console.log("language changed")
+                    const currLang=instance.options.mode;
+                    onLangChange(currLang)
                     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
                         roomId,
                         code:null,
-                        lang:instance.options.mode
+                        lang:currLang
                     });
             });
         } 

@@ -55,6 +55,7 @@ const EditorPage = () => {
                         socketId,
                         lang: langRef.current
                     });
+                    // document.getElementById("langOption").value=langRef.current;
                 }
             );
 
@@ -81,10 +82,10 @@ const EditorPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, []);
-    
+
     const setLanguage = (e) => {
-        editorRef.current.setOption("mode",e.target.value)
-        langRef.current=e.target.value
+        editorRef.current.setOption("mode", e.target.value)
+        langRef.current = e.target.value
     };
 
     async function copyRoomId() {
@@ -108,7 +109,11 @@ const EditorPage = () => {
     if (!location.state) {
         return <Navigate to="/" />;
     }
-
+    // const languagesDic = [
+    //     { value: 'text/x-c++src', label: 'C++' },
+    //     { value: 'text/x-python', label: 'Python' },
+    //     { value: 'text/x-java', label: 'Java' },
+    // ];
     return (
         <div className='main'>
             <div className='upperPanel'>
@@ -129,6 +134,10 @@ const EditorPage = () => {
                         socketRef={socketRef}
                         roomId={roomId}
                         editorRef={editorRef}
+                        onLangChange={(lang) => {
+                            langRef.current = lang;
+                            document.getElementById("langOption").value=lang;
+                        }}
                         onCodeChange={(code) => {
                             codeRef.current = code;
                         }}
