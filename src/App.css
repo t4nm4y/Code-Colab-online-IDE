@@ -1,0 +1,159 @@
+.homePageWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    height: 100vh;
+  }
+  .upperPanel{
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+  }
+  .runBtn{
+    margin-top: 5px;
+    margin-left: 20px;
+    color: #C2AFF0;
+  }
+  .runBtn:hover{
+    color: #786c94;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  .options{
+    padding: 10px;
+    color: #fff;
+  }
+  .formWrapper {
+    /* glassmorphism */
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px 0 rgba(173, 173, 173, 0.37);
+    backdrop-filter: blur( 2.5px );
+    -webkit-backdrop-filter: blur( 2.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+  
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .homePageLogo {
+    height: 80px;
+    margin-bottom: 30px;
+  }
+  
+  .inputBox {
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    margin-bottom: 14px;
+    background: #f5f1e7;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .btn {
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .joinBtn,
+  .leaveBtn {
+    background: #C2AFF0;
+    width: 100px;
+    margin-left: auto;
+  }
+
+  .joinBtn:hover,
+  .leaveBtn:hover {
+    background: #786c94;
+  }
+  
+  .createInfo {
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+  
+  .NewRoomBtn {
+    color: #C2AFF0;
+    text-decoration: none;
+    border-bottom: 1px solid #C2AFF0;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .NewRoomBtn:hover,
+  footer a:hover {
+    color: #786c94;
+    border-color: #786c94;
+  }
+  .main{
+    display: flex;
+    flex-direction: column;
+  }
+  .mainWrap {
+    display: grid;
+    /* 1fr all the space available , 1fr for left column(editor), and 230px for the right column(side bar)*/
+    grid-template-columns: 1fr 230px ;
+  }
+  
+  .aside {
+    background: #16091c;
+    padding: 16px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+  }
+  .asideInner {
+    flex: 1;
+  }
+  
+  .clientsList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .client {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-weight: bold;
+  }
+  .userName {
+    margin-top: 10px;
+  }
+  
+  .logo {
+    border-bottom: 1px solid #424242;
+    padding-bottom: 10px;
+  }
+  
+  .logoImage {
+    height: 60px;
+  }
+  
+  .leaveBtn {
+    width: 100%;
+    margin-top: 20px;
+  }
+  .CodeMirror {
+    min-height: calc(100vh - 60px);
+    font-size: 20px;
+    line-height: 1.6;
+    padding-top: 20px;
+  }
+  
