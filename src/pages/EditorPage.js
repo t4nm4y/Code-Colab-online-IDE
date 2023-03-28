@@ -11,6 +11,8 @@ import {
     useParams,
 } from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
+import axios from "axios";
+import qs from 'qs';
 
 const EditorPage = () => {
     const socketRef = useRef(null);
@@ -21,6 +23,7 @@ const EditorPage = () => {
     const { roomId } = useParams();
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
+    
 
 
     useEffect(() => {
@@ -101,19 +104,84 @@ const EditorPage = () => {
     function leaveRoom() {
         reactNavigator('/');
     }
+//---------------------------------------------------------------------------------------------------------------
+    const [codeOutput, setData] = useState();
+
+    function getOutput() {
+        const selectedIndex = document.getElementById("langOption").selectedIndex;
+        const currLang = document.getElementById("langOption").options[selectedIndex].label;
+        // console.log("the code is: ",codeRef.current)
+        // console.log("the lang is: ",currLang)
+        
+        const data = qs.stringify({
+            'code': codeRef.current,
+            'language': currLang,
+            'input':''
+        });
+
+        const config = {
+            method: 'post',
+            url: 'https://api.codex.jaagrav.in',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            data: data
+        };
+        axios(config)
+            .then(function (response) {
+                console.log("resp: ",response.data);
+                setData(response.data)
+                console.log("output recieved inside axios func: ",codeOutput);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    // var co;
+    // function getOutput() {
+    //     const selectedIndex = document.getElementById("langOption").selectedIndex;
+    //     const currLang = document.getElementById("langOption").options[selectedIndex].label;
+    //     console.log("the code is: ",codeRef.current)
+    //     console.log("the lang is: ",currLang)
+        
+    //     const data = qs.stringify({
+    //         'code': codeRef.current,
+    //         'language': currLang,
+    //         'input':''
+    //     });
+
+    //     const config = {
+    //         method: 'post',
+    //         // url: `https://api.codex.jaagrav.in?${Math.random()}`,
+    //         url: 'https://api.codex.jaagrav.in',
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //             'Cache-Control': 'no-cache'
+    //         },
+    //         data: data
+    //     };
+    //     axios(config)
+    //         .then(function (response) {
+    //             console.log("resp: ",response.data);
+    //             co=response.data;
+
+    //             console.log("output recieved inside axios func: ",co);
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
+
     function runCode() {
-        console.log("will add it soon")
+        getOutput();
     }
 
     //if don't get the usename as state, then we will redirect it back to the home page
     if (!location.state) {
         return <Navigate to="/" />;
     }
-    // const languagesDic = [
-    //     { value: 'text/x-c++src', label: 'C++' },
-    //     { value: 'text/x-python', label: 'Python' },
-    //     { value: 'text/x-java', label: 'Java' },
-    // ];
+    
     return (
         <div className='main'>
             <div className='upperPanel'>
@@ -121,9 +189,9 @@ const EditorPage = () => {
                     <label class="visually-hidden" for="autoSizingSelect">Language: &nbsp;</label>
                     <select class="form-select" id="langOption" onChange={setLanguage}>
                         <option selected>Select</option>
-                        <option value="text/x-c++src">C++</option>
-                        <option value="text/x-python">Python</option>
-                        <option value="text/x-java">Java</option>
+                        <option value="text/x-c++src">cpp</option>
+                        <option value="text/x-python">py</option>
+                        <option value="text/x-java">java</option>
                     </select>
                 </div>
                 <PlayFill className='runBtn' size={30} onClick={runCode} />
@@ -136,7 +204,7 @@ const EditorPage = () => {
                         editorRef={editorRef}
                         onLangChange={(lang) => {
                             langRef.current = lang;
-                            document.getElementById("langOption").value=lang;
+                            document.getElementById("langOption").value = lang;
                         }}
                         onCodeChange={(code) => {
                             codeRef.current = code;
