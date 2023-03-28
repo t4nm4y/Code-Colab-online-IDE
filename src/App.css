@@ -1,3 +1,34 @@
+.ResizableBox {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border: none;
+  border-radius: 5px;
+  overflow: hidden;
+  width: 100%;
+  height: calc(100vh - 50px);
+}
+.InputBox {
+  flex: 1;
+  padding: 5px;
+  padding-right: 10px;
+  border-bottom: 1px solid #635c5c;
+  padding-bottom: 10px;
+}
+.textArea{
+  overflow:scroll;
+  height: 100%;
+  width: 100%;
+  resize: none;
+}
+
+.OutputBox {
+  padding: 5px;
+  flex: 1;
+  padding-right: 10px;
+}
+
+/* ----------------------------------------------------------------------- */
 .homePageWrapper {
     display: flex;
     align-items: center;
@@ -60,6 +91,17 @@
     font-weight: bold;
   }
   
+  .btn_leaveBtn,
+  .btn_copyBtn{
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
   .btn {
     border: none;
     padding: 10px;
@@ -69,7 +111,8 @@
     cursor: pointer;
     transition: all 0.3s ease-in-out;
   }
-  
+
+  .btn_leaveBtn,
   .joinBtn,
   .leaveBtn {
     background: #C2AFF0;
@@ -77,6 +120,8 @@
     margin-left: auto;
   }
 
+  .btn_leaveBtn:hover,
+  .btn_copyBtn:hover,
   .joinBtn:hover,
   .leaveBtn:hover {
     background: #786c94;
@@ -106,12 +151,12 @@
   .mainWrap {
     display: grid;
     /* 1fr all the space available , 1fr for left column(editor), and 230px for the right column(side bar)*/
-    grid-template-columns: 1fr 230px ;
+    grid-template-columns: 1fr 400px 150px ;
   }
   
   .aside {
     background: #16091c;
-    padding: 16px;
+    padding: 12px;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -124,14 +169,15 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+    /* gap: 20px; */
+    gap: 15px;
   }
   
   .client {
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-weight: bold;
+    /* font-weight: bold; */
   }
   .userName {
     margin-top: 10px;
@@ -143,9 +189,11 @@
   }
   
   .logoImage {
-    height: 60px;
+    height: 40px;
   }
-  
+
+  .btn_leaveBtn,
+  .btn_copyBtn,
   .leaveBtn {
     width: 100%;
     margin-top: 20px;

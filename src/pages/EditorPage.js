@@ -24,7 +24,9 @@ const EditorPage = () => {
     const reactNavigator = useNavigate();
     const [clients, setClients] = useState([]);
     
-
+    const [codeOutput, setData] = useState(null);
+    const [inputText, setInputText] = useState("");
+    // const [outputText, setOutputText] = useState("");
 
     useEffect(() => {
         const init = async () => {
@@ -105,18 +107,16 @@ const EditorPage = () => {
         reactNavigator('/');
     }
 //---------------------------------------------------------------------------------------------------------------
-    const [codeOutput, setData] = useState();
+    // const [codeOutput, setData] = useState(null);
 
     function getOutput() {
         const selectedIndex = document.getElementById("langOption").selectedIndex;
         const currLang = document.getElementById("langOption").options[selectedIndex].label;
-        // console.log("the code is: ",codeRef.current)
-        // console.log("the lang is: ",currLang)
         
         const data = qs.stringify({
             'code': codeRef.current,
             'language': currLang,
-            'input':''
+            'input':inputText
         });
 
         const config = {
@@ -129,49 +129,18 @@ const EditorPage = () => {
         };
         axios(config)
             .then(function (response) {
-                console.log("resp: ",response.data);
-                setData(response.data)
-                console.log("output recieved inside axios func: ",codeOutput);
+                // console.log("resp: ",response);
+                if(response.data.error){
+                    setData("Error:\n"+response.data.error)
+                }
+                else{
+                    setData(response.data.output)
+                }
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
-
-    // var co;
-    // function getOutput() {
-    //     const selectedIndex = document.getElementById("langOption").selectedIndex;
-    //     const currLang = document.getElementById("langOption").options[selectedIndex].label;
-    //     console.log("the code is: ",codeRef.current)
-    //     console.log("the lang is: ",currLang)
-        
-    //     const data = qs.stringify({
-    //         'code': codeRef.current,
-    //         'language': currLang,
-    //         'input':''
-    //     });
-
-    //     const config = {
-    //         method: 'post',
-    //         // url: `https://api.codex.jaagrav.in?${Math.random()}`,
-    //         url: 'https://api.codex.jaagrav.in',
-    //         headers: {
-    //             'Content-Type': 'application/x-www-form-urlencoded',
-    //             'Cache-Control': 'no-cache'
-    //         },
-    //         data: data
-    //     };
-    //     axios(config)
-    //         .then(function (response) {
-    //             console.log("resp: ",response.data);
-    //             co=response.data;
-
-    //             console.log("output recieved inside axios func: ",co);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // };
 
     function runCode() {
         getOutput();
@@ -211,6 +180,24 @@ const EditorPage = () => {
                         }}
                     />
                 </div>
+
+                <div className="ResizableBox">
+                    <div className="InputBox">
+                        <textarea className='textArea'
+                            type="text"
+                            value={inputText}
+                            onChange={(e) => setInputText(e.target.value)}
+                            placeholder="Enter input text"
+                        />
+                    </div>
+                    <div className="OutputBox">
+                        <textarea className='textArea'
+                            value={codeOutput}
+                            placeholder="Output text will appear here"
+                            readOnly
+                        />
+                    </div>
+                </div>
                 <div className="aside">
                     <div className="asideInner">
                         <div className="logo">
@@ -220,7 +207,7 @@ const EditorPage = () => {
                                 alt="logo"
                             />
                         </div>
-                        <h3>Connected Users</h3>
+                        <h4>Connected Users</h4>
                         <div className="clientsList">
                             {clients.map((client) => (
                                 <Client
@@ -230,10 +217,10 @@ const EditorPage = () => {
                             ))}
                         </div>
                     </div>
-                    <button className="btn copyBtn" onClick={copyRoomId}>
+                    <button className="btn_copyBtn" onClick={copyRoomId}>
                         Copy ROOM ID
                     </button>
-                    <button className="btn leaveBtn" onClick={leaveRoom}>
+                    <button className="btn_leaveBtn" onClick={leaveRoom}>
                         Leave
                     </button>
                 </div>
