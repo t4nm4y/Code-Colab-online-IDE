@@ -88,10 +88,10 @@ const EditorPage = () => {
         editorRef.current.setOption("mode", e.target.value)
         langRef.current = e.target.value
         if(e.target.value==='text/x-c++src'){
-            editorRef.current.setValue("#include <iostream>\nusing namespace std;\nint main() {\n    // Write C++ code here\n    cout << \"Hello world!\";\n    return 0;\n}")
+            editorRef.current.setValue("#include <iostream>\nusing namespace std;\nint main() {\n  // Write C++ code here\n  cout << \"Hello world!\";\n  return 0;\n}")
         }
         else if(e.target.value==='text/x-java'){
-            editorRef.current.setValue("class Func {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}")
+            editorRef.current.setValue("class Func {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}")
         }
         else if(e.target.value==='text/x-python'){
             editorRef.current.setValue("print(\"Hello world\")")
