@@ -159,7 +159,7 @@ const EditorPage = () => {
             })
             .catch(function (error) {
                 console.log(error);
-                setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded it soon.")
+                setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded soon.")
             });
     };
 
