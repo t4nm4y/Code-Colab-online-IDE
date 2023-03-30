@@ -159,7 +159,7 @@ const EditorPage = () => {
             })
             .catch(function (error) {
                 console.log(error);
-                setData("The prev api was getting slow,\nSo I'm working on a new api.\nIt will be live soon")
+                setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded it soon.")
             });
     };
 
