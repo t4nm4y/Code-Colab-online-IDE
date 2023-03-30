@@ -96,6 +96,11 @@ const EditorPage = () => {
         else if(e.target.value==='text/x-python'){
             editorRef.current.setValue("print(\"Hello world\")")
         }
+        socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+            roomId,
+            code:editorRef.current.getValue(),
+            lang:null
+        });
     };
 
     async function copyRoomId() {
