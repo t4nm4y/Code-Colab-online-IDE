@@ -4,7 +4,7 @@ import ACTIONS from '../Actions';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
 import { initSocket } from '../socket';
-import {useLocation, useNavigate, Navigate, useParams} from 'react-router-dom';
+import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
 import axios from "axios";
 import qs from 'qs';
@@ -87,19 +87,19 @@ const EditorPage = () => {
     const setLanguage = (e) => {
         editorRef.current.setOption("mode", e.target.value)
         langRef.current = e.target.value
-        if(e.target.value==='text/x-c++src'){
+        if (e.target.value === 'text/x-c++src') {
             editorRef.current.setValue("#include <iostream>\nusing namespace std;\nint main() {\n  // Write C++ code here\n  cout << \"Hello world!\";\n  return 0;\n}")
         }
-        else if(e.target.value==='text/x-java'){
+        else if (e.target.value === 'text/x-java') {
             editorRef.current.setValue("class Func {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}")
         }
-        else if(e.target.value==='text/x-python'){
+        else if (e.target.value === 'text/x-python') {
             editorRef.current.setValue("print(\"Hello world\")")
         }
         socketRef.current.emit(ACTIONS.CODE_CHANGE, {
             roomId,
-            code:editorRef.current.getValue(),
-            lang:null
+            code: editorRef.current.getValue(),
+            lang: null
         });
     };
 
@@ -159,14 +159,15 @@ const EditorPage = () => {
             })
             .catch(function (error) {
                 console.log(error);
+                setData("The prev api was getting slow,\nSo I'm working on a new api.\nIt will be live soon")
             });
     };
 
     function runCode() {
-        if(langRef.current){
-        getOutput();
+        if (langRef.current) {
+            getOutput();
         }
-        else{
+        else {
             alert("Please select a language!")
         }
     }
@@ -178,27 +179,27 @@ const EditorPage = () => {
     const mouseDownHandler = (e) => {
         // Get the current mouse position
         x = e.clientX;
-        
+
         // Calculate the dimension of element
         const styles = window.getComputedStyle(ele);
-        
+
         w = parseInt(styles.width);
         // Attach the listeners to `document`
         ref.current.addEventListener('mousemove', mouseMoveHandler);
         ref.current.addEventListener('mouseup', mouseUpHandler);
     };
-    
+
     const mouseMoveHandler = (e) => {
         const dx = x - e.clientX;
         ele.style.width = `${w + dx}px`;
     };
-    
+
     const mouseUpHandler = () => {
         // Remove the handlers of `mousemove` and `mouseup`
         ref.current.removeEventListener('mousemove', mouseMoveHandler);
         ref.current.removeEventListener('mouseup', mouseUpHandler);
     };
-    
+
     //if don't get the usename as state, then we will redirect it back to the home page
     if (!location.state) {
         return <Navigate to="/" />;
