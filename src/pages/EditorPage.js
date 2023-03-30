@@ -4,12 +4,7 @@ import ACTIONS from '../Actions';
 import Client from '../components/Client';
 import Editor from '../components/Editor';
 import { initSocket } from '../socket';
-import {
-    useLocation,
-    useNavigate,
-    Navigate,
-    useParams,
-} from 'react-router-dom';
+import {useLocation, useNavigate, Navigate, useParams} from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
 import axios from "axios";
 import qs from 'qs';
@@ -26,7 +21,6 @@ const EditorPage = () => {
 
     const [codeOutput, setData] = useState(null);
     const [inputText, setInputText] = useState("");
-    // const [outputText, setOutputText] = useState("");
 
     const ref = useRef(null);
 
@@ -93,6 +87,15 @@ const EditorPage = () => {
     const setLanguage = (e) => {
         editorRef.current.setOption("mode", e.target.value)
         langRef.current = e.target.value
+        if(e.target.value==='text/x-c++src'){
+            editorRef.current.setValue("#include <iostream>\nusing namespace std;\nint main() {\n    // Write C++ code here\n    cout << \"Hello world!\";\n    return 0;\n}")
+        }
+        else if(e.target.value==='text/x-java'){
+            editorRef.current.setValue("class Func {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}")
+        }
+        else if(e.target.value==='text/x-python'){
+            editorRef.current.setValue("print(\"Hello world\")")
+        }
     };
 
     async function copyRoomId() {
@@ -105,11 +108,21 @@ const EditorPage = () => {
         }
     }
 
+    async function copyCode() {
+        try {
+            await navigator.clipboard.writeText(codeRef.current);
+            toast.success('Code has been copied to your clipboard');
+        } catch (err) {
+            toast.error('Could not copy the Code');
+            console.error(err);
+        }
+    }
+
     function leaveRoom() {
         reactNavigator('/');
     }
-    //---------------------------------------------------------------------------------------------------------------
-    // const [codeOutput, setData] = useState(null);
+
+    //code output ------------------------------------------------------------------------------------------------------
 
     function getOutput() {
         const selectedIndex = document.getElementById("langOption").selectedIndex;
@@ -153,38 +166,38 @@ const EditorPage = () => {
         }
     }
 
-    //if don't get the usename as state, then we will redirect it back to the home page
-    if (!location.state) {
-        return <Navigate to="/" />;
-    }
-
+    //resize input, output text box div----------------------------------------------------------------
     let x = 0;
     let w = 0;
     const ele = document.getElementById('resizeMe');
     const mouseDownHandler = (e) => {
         // Get the current mouse position
         x = e.clientX;
-
+        
         // Calculate the dimension of element
         const styles = window.getComputedStyle(ele);
-
+        
         w = parseInt(styles.width);
         // Attach the listeners to `document`
         ref.current.addEventListener('mousemove', mouseMoveHandler);
         ref.current.addEventListener('mouseup', mouseUpHandler);
     };
-
+    
     const mouseMoveHandler = (e) => {
         const dx = x - e.clientX;
         ele.style.width = `${w + dx}px`;
     };
-
+    
     const mouseUpHandler = () => {
         // Remove the handlers of `mousemove` and `mouseup`
         ref.current.removeEventListener('mousemove', mouseMoveHandler);
         ref.current.removeEventListener('mouseup', mouseUpHandler);
     };
-
+    
+    //if don't get the usename as state, then we will redirect it back to the home page
+    if (!location.state) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className='main'>
@@ -224,13 +237,13 @@ const EditorPage = () => {
                                 value={inputText}
 
                                 onChange={(e) => setInputText(e.target.value)}
-                                placeholder="Enter input text"
+                                placeholder="Enter input here"
                             />
                         </div>
                         <div className="OutputBox">
                             <textarea className='textArea'
                                 value={codeOutput}
-                                placeholder="Output text will appear here"
+                                placeholder="Output will appear here"
                                 readOnly
                             />
                         </div>
@@ -255,6 +268,9 @@ const EditorPage = () => {
                             ))}
                         </div>
                     </div>
+                    <button className="btn_copyBtn" onClick={copyCode}>
+                        Copy Code
+                    </button>
                     <button className="btn_copyBtn" onClick={copyRoomId}>
                         Copy ROOM ID
                     </button>

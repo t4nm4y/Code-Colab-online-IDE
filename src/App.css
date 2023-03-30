@@ -12,10 +12,8 @@
   flex-direction: row;
   position: absolute;
   right:170px;
-  /* bottom: 0px; */
   min-width: 300px;
   height: calc(100vh - 40px);
-  /* overflow-x: hidden; */
 }
 .editorWrap{
   width: 100%;
@@ -37,12 +35,14 @@
   padding-right: 10px;
   border-bottom: 1px solid #635c5c;
   padding-bottom: 10px;
+  font-size: large;
 }
 .textArea{
   overflow:scroll;
   height: 100%;
   width: 100%;
   resize: none;
+  font-size: large;
 }
 
 .OutputBox {
@@ -148,7 +148,7 @@
   .btn_copyBtn:hover,
   .joinBtn:hover,
   .leaveBtn:hover {
-    background: #786c94;
+    background: #787878;
   }
   
   .createInfo {
@@ -173,9 +173,6 @@
     flex-direction: column;
   }
   .mainWrap {
-    /* display: grid;
-    // 1fr all the space available , 1fr for left column(editor), and 230px for the right column(side bar)
-    grid-template-columns: 1fr 400px 150px ; */
     display: flex;
   }
   
