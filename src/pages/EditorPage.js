@@ -174,7 +174,7 @@ const EditorPage = () => {
               'Access-Control-Allow-Origin': '*'
             }
           };
-        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
+        axios.post('https://proxy.cors.sh/https://api.jdoodle.com/v1/execute', program)
         // axios.post('https://api.jdoodle.com/v1/execute', program, axiosConfig)
             .then((response) => {
                 console.log('response:',response)
