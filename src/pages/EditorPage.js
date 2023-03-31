@@ -7,7 +7,6 @@ import { initSocket } from '../socket';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
 import axios from "axios";
-import qs from 'qs';
 
 const EditorPage = () => {
     const socketRef = useRef(null);
@@ -170,11 +169,13 @@ const EditorPage = () => {
             clientId: process.env.REACT_APP_CLIENT_ID,
             clientSecret: process.env.REACT_APP_CLIENT_SECRET
         };
-        axios.post('https://api.jdoodle.com/v1/execute', program,{
+        const axiosConfig = {
             headers: {
               'Access-Control-Allow-Origin': '*'
             }
-          })
+          };
+        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
+        // axios.post('https://api.jdoodle.com/v1/execute', program, axiosConfig)
             .then((response) => {
                 console.log('response:',response)
                 setData("CPU Time:"+response.data.cpuTime+"  Memory:"+response.data.memory+"\n\n"+response.data.output)
