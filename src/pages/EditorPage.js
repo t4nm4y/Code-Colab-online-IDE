@@ -133,33 +133,55 @@ const EditorPage = () => {
         const selectedIndex = document.getElementById("langOption").selectedIndex;
         const currLang = document.getElementById("langOption").options[selectedIndex].label;
 
-        const data = qs.stringify({
-            'code': codeRef.current,
-            'language': currLang,
-            'input': inputText
-        });
+        // const data = qs.stringify({
+        //     'code': codeRef.current,
+        //     'language': currLang,
+        //     'input': inputText
+        // });
 
-        const config = {
-            method: 'post',
-            url: 'https://api.codex.jaagrav.in',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            data: data
+        // const config = {
+        //     method: 'post',
+        //     url: 'https://api.codex.jaagrav.in',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     },
+        //     data: data
+        // };
+        // axios(config)
+        //     .then(function (response) {
+        //         // console.log("resp: ",response);
+        //         if (response.data.error) {
+        //             setData("Error:\n" + response.data.error)
+        //         }
+        //         else {
+        //             setData(response.data.output)
+        //         }
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //         setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded soon.")
+        //     });
+
+        const program = {
+            script: codeRef.current,
+            language: currLang,
+            stdin: inputText,
+            versionIndex: "4",
+            clientId: process.env.REACT_APP_CLIENT_ID,
+            clientSecret: process.env.REACT_APP_CLIENT_SECRET
         };
-        axios(config)
-            .then(function (response) {
-                // console.log("resp: ",response);
-                if (response.data.error) {
-                    setData("Error:\n" + response.data.error)
-                }
-                else {
-                    setData(response.data.output)
-                }
+        axios.post('https://api.jdoodle.com/v1/execute', program,{
+            headers: {
+              'Access-Control-Allow-Origin': '*'
+            }
+          })
+            .then((response) => {
+                console.log('response:',response)
+                setData("CPU Time:"+response.data.cpuTime+"  Memory:"+response.data.memory+"\n\n"+response.data.output)
             })
-            .catch(function (error) {
-                console.log(error);
-                setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded soon.")
+            .catch((error) => {
+                console.log('error:', error);
+                setData("The Website is receiving heavy traffic!\nPlease try again later.")
             });
     };
 
@@ -213,7 +235,7 @@ const EditorPage = () => {
                     <select class="form-select" id="langOption" onChange={setLanguage}>
                         <option selected>Select</option>
                         <option value="text/x-c++src">cpp</option>
-                        <option value="text/x-python">py</option>
+                        <option value="text/x-python">python3</option>
                         <option value="text/x-java">java</option>
                     </select>
                 </div>
