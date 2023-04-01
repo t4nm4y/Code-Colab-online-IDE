@@ -174,7 +174,7 @@ const EditorPage = () => {
               'Access-Control-Allow-Origin': '*'
             }
           };
-        axios.post('https://proxy.cors.sh/https://api.jdoodle.com/v1/execute', program)
+        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
         // axios.post('https://api.jdoodle.com/v1/execute', program, axiosConfig)
             .then((response) => {
                 console.log('response:',response)
@@ -182,7 +182,7 @@ const EditorPage = () => {
             })
             .catch((error) => {
                 console.log('error:', error);
-                setData("The Website is receiving heavy traffic!\nPlease try again later.")
+                setData("If you are getting this error then\nPlz visit \nhttps://cors-anywhere.herokuapp.com/ \nand click on the \"Request temporary access to the demo server\"\nThen try to run the code again.")
             });
     };
 
