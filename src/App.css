@@ -5,20 +5,22 @@
   left: 0;
   top: 0;
   width: 5px;
-  background-color: #ffffff30;
+  background-color: #ffffff5f;
 }
 .MiddleDiv {
   display: flex;
   flex-direction: row;
   position: absolute;
   right:170px;
-  min-width: 300px;
+  width: 200px;
+  min-width: 30px;
   height: calc(100vh - 40px);
 }
 .editorWrap{
-  width: 100%;
+  width: calc(100% - 370px);
+  max-width: calc(100% - 200px);
+  overflow-x:auto;
 }
-
 .ResizableBox {
   display: flex;
   flex-direction: column;
@@ -177,6 +179,10 @@
   }
   
   .aside {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
     background: #16091c;
     padding: 12px;
     color: #fff;

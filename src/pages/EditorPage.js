@@ -132,35 +132,6 @@ const EditorPage = () => {
         const selectedIndex = document.getElementById("langOption").selectedIndex;
         const currLang = document.getElementById("langOption").options[selectedIndex].label;
 
-        // const data = qs.stringify({
-        //     'code': codeRef.current,
-        //     'language': currLang,
-        //     'input': inputText
-        // });
-
-        // const config = {
-        //     method: 'post',
-        //     url: 'https://api.codex.jaagrav.in',
-        //     headers: {
-        //         'Content-Type': 'application/x-www-form-urlencoded',
-        //     },
-        //     data: data
-        // };
-        // axios(config)
-        //     .then(function (response) {
-        //         // console.log("resp: ",response);
-        //         if (response.data.error) {
-        //             setData("Error:\n" + response.data.error)
-        //         }
-        //         else {
-        //             setData(response.data.output)
-        //         }
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //         setData("The Website is receiving heavy traffic!\nPlease try again later.\n It will be upgraded soon.")
-        //     });
-
         const program = {
             script: codeRef.current,
             language: currLang,
@@ -198,13 +169,14 @@ const EditorPage = () => {
     //resize input, output text box div----------------------------------------------------------------
     let x = 0;
     let w = 0;
-    const ele = document.getElementById('resizeMe');
+    const resizer_id = document.getElementById('resizeMe');
+    const editor_id= document.getElementById('editor');
     const mouseDownHandler = (e) => {
         // Get the current mouse position
         x = e.clientX;
 
         // Calculate the dimension of element
-        const styles = window.getComputedStyle(ele);
+        const styles = window.getComputedStyle(resizer_id);
 
         w = parseInt(styles.width);
         // Attach the listeners to `document`
@@ -214,7 +186,8 @@ const EditorPage = () => {
 
     const mouseMoveHandler = (e) => {
         const dx = x - e.clientX;
-        ele.style.width = `${w + dx}px`;
+        resizer_id.style.width = `${w + dx}px`;
+        editor_id.style.width = `calc(100% - 170px - ${w + dx}px)`;
     };
 
     const mouseUpHandler = () => {
@@ -243,7 +216,7 @@ const EditorPage = () => {
                 <PlayFill className='runBtn' size={30} onClick={runCode} />
             </div>
             <div ref={ref} className="mainWrap">
-                <div className="editorWrap">
+                <div id="editor" className="editorWrap">
                     <Editor
                         socketRef={socketRef}
                         roomId={roomId}
