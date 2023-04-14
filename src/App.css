@@ -1,3 +1,88 @@
+/* hide anything */
+.hidden{
+  display: none;
+}
+/* menu css */
+.menu {
+  position: fixed;
+  top: 0;
+  right: -300px; /* start offscreen */
+  width: 290px;
+  height: 100vh;
+  z-index: 10;
+  padding-left: 5px;
+  /* glassmorphism */
+  background: rgba(22, 9, 28, 0.664);
+  backdrop-filter: blur( 3px );
+  -webkit-backdrop-filter: blur(3px );
+}
+
+.menu.open {
+  transform: translateX(-300px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.menu:not(.open) {
+  transform: translateX(0);
+  transition: transform ease-in-out 0.3s; /* add delay to the animation */
+}
+
+.close-btn {
+  position: absolute;
+  top: 1px;
+  left: 10px;
+  font-size: 25px;
+  color: #C2AFF0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+form {
+  position: absolute;
+  bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 15px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  background-color: transparent;
+  color: #C2AFF0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.close-btn:hover{
+  color:#787878;
+}
+button[type="submit"]:hover {
+  color: #787878;
+}
+
+.copy_codeBtn{
+  position: absolute;
+  right: 310px;
+  margin-top: 5px;
+}
+.chat_btn{
+  background: #C2AFF0;
+  position: absolute;
+  right: 240px;
+  margin-top: 5px;
+}
+
+/* _______________________________________________________ */
 .resizer {
   position: relative;
   cursor: col-resize;
@@ -116,7 +201,9 @@
     font-size: 16px;
     font-weight: bold;
   }
-  
+
+  .chat_btn,
+  .copy_codeBtn,
   .btn_leaveBtn,
   .btn_copyBtn{
     cursor: pointer;
@@ -146,6 +233,8 @@
     margin-left: auto;
   }
 
+  .copy_codeBtn:hover,
+  .chat_btn:hover,
   .btn_leaveBtn:hover,
   .btn_copyBtn:hover,
   .joinBtn:hover,

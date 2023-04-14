@@ -7,6 +7,8 @@ import { initSocket } from '../socket';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
 import axios from "axios";
+import { BsSendFill } from "react-icons/bs";
+import ScrollToBottom from "react-scroll-to-bottom"
 
 const EditorPage = () => {
     const socketRef = useRef(null);
@@ -20,6 +22,29 @@ const EditorPage = () => {
 
     const [codeOutput, setData] = useState(null);
     const [inputText, setInputText] = useState("");
+    const [menu_isOpen, setMenuOpen] = useState(false);
+
+    // for chats_____________________________________________________________
+    // const [currentMessage, setCurrentMessage] = useState("");
+    // const [messageList, setMessageList] = useState([]);
+
+    // const sendMessage = async () => {
+    //     if (currentMessage !== "") {
+    //       const messageData = {
+    //         room: roomId,
+    //         author: username,
+    //         message: currentMessage,
+    //         time:
+    //           new Date(Date.now()).getHours() +
+    //           ":" +
+    //           new Date(Date.now()).getMinutes(),
+    //       };
+    
+    //       await socket.emit(ACTIONS.SEND_MSG, messageData);
+    //       setMessageList((list) => [...list, messageData]);
+    //       setCurrentMessage("");
+    //     }
+    //   };
 
     const ref = useRef(null);
 
@@ -201,8 +226,46 @@ const EditorPage = () => {
         return <Navigate to="/" />;
     }
 
+    //_____MENU___________________________________________________________________________________-
+    const toggleMenu = () => {
+        setMenuOpen(!menu_isOpen);
+    };
+
+    const sendMsg = (event) => {
+        event.preventDefault();
+    };
+
     return (
         <div className='main'>
+
+            <div className={`menu ${menu_isOpen ? 'open' : ''}`}>
+                {/* <ScrollToBottom className="message-container">
+                    {messageList.map((messageContent) => {
+                        return (
+                            <div
+                                className="message"
+                                id={username === messageContent.author ? "you" : "other"}
+                            >
+                                <div>
+                                    <div className="message-content">
+                                        <p>{messageContent.message}</p>
+                                    </div>
+                                    <div className="message-meta">
+                                        <p id="time">{messageContent.time}</p>
+                                        <p id="author">{messageContent.author}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </ScrollToBottom> */}
+                <button className="close-btn" onClick={toggleMenu}>x</button>
+                <form onSubmit={sendMsg}>
+                    <input type="text" placeholder="Enter msg" />
+                    <button type="submit"><BsSendFill size={23} /></button>
+                </form>
+            </div>
+
             <div className='upperPanel'>
                 <div className='options'>
                     <label class="visually-hidden" for="autoSizingSelect">Language: &nbsp;</label>
@@ -214,6 +277,10 @@ const EditorPage = () => {
                     </select>
                 </div>
                 <PlayFill className='runBtn' size={30} onClick={runCode} />
+                <button className="copy_codeBtn" onClick={copyCode}>Copy Code</button>
+                <button className={!menu_isOpen ? 'chat_btn' : 'hidden'} onClick={toggleMenu}>
+                    Chats
+                </button>
             </div>
             <div ref={ref} className="mainWrap">
                 <div id="editor" className="editorWrap">
@@ -270,9 +337,6 @@ const EditorPage = () => {
                             ))}
                         </div>
                     </div>
-                    <button className="btn_copyBtn" onClick={copyCode}>
-                        Copy Code
-                    </button>
                     <button className="btn_copyBtn" onClick={copyRoomId}>
                         Copy ROOM ID
                     </button>
