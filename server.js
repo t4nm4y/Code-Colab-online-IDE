@@ -1,5 +1,5 @@
 const express = require('express');
-var cors = require('cors')
+const cors = require('cors')
 const app = express();
 app.use(cors());
 const http = require('http');
@@ -8,7 +8,12 @@ const { Server } = require('socket.io');
 const ACTIONS = require('./src/Actions');
 
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+    },
+  });
 
 //to serve the actual index.html file for any request
 app.use(express.static('build'));
@@ -69,6 +74,10 @@ io.on('connection', (socket) => {
         delete userSocketMap[socket.id];
         socket.leave();
     });
+
+    socket.on(ACTIONS.SEND_MSG, (data) => {
+        socket.in(data.room).emit(ACTIONS.RECEIVE_MSG, data);
+      });
 });
 
 const PORT = process.env.PORT || 5000;

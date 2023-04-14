@@ -25,26 +25,8 @@ const EditorPage = () => {
     const [menu_isOpen, setMenuOpen] = useState(false);
 
     // for chats_____________________________________________________________
-    // const [currentMessage, setCurrentMessage] = useState("");
-    // const [messageList, setMessageList] = useState([]);
-
-    // const sendMessage = async () => {
-    //     if (currentMessage !== "") {
-    //       const messageData = {
-    //         room: roomId,
-    //         author: username,
-    //         message: currentMessage,
-    //         time:
-    //           new Date(Date.now()).getHours() +
-    //           ":" +
-    //           new Date(Date.now()).getMinutes(),
-    //       };
-    
-    //       await socket.emit(ACTIONS.SEND_MSG, messageData);
-    //       setMessageList((list) => [...list, messageData]);
-    //       setCurrentMessage("");
-    //     }
-    //   };
+    const [currentMessage, setCurrentMessage] = useState("");
+    const [messageList, setMessageList] = useState([]);
 
     const ref = useRef(null);
 
@@ -97,6 +79,16 @@ const EditorPage = () => {
                     });
                 }
             );
+
+            // listening for chat messages
+            socketRef.current.on(ACTIONS.RECEIVE_MSG, (data) => {
+                setMessageList((list) => [...list, data]);
+                toast(`New Message from ${data.author}`, {
+                    icon: '✉️',
+                  });
+                  console.log(data)
+            });
+
         };
         init();
 
@@ -107,6 +99,23 @@ const EditorPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, []);
+
+    function sendMessage() {
+        if (currentMessage !== "") {
+            const messageData = {
+                room: roomId,
+                author: location.state?.username,
+                message: currentMessage,
+                // time:
+                //     new Date(Date.now()).getHours() +
+                //     ":" +
+                //     new Date(Date.now()).getMinutes(),
+            };
+            socketRef.current.emit(ACTIONS.SEND_MSG, messageData);
+            setMessageList((list) => [...list, messageData]);
+            setCurrentMessage("");
+        }
+    };
 
     const setLanguage = (e) => {
         editorRef.current.setOption("mode", e.target.value)
@@ -167,18 +176,18 @@ const EditorPage = () => {
         };
         const axiosConfig = {
             headers: {
-              'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*'
             }
-          };
-        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
-        // axios.post('https://api.jdoodle.com/v1/execute', program, axiosConfig)
+        };
+        // axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
+        axios.post('https://api.jdoodle.com/v1/execute', program)
             .then((response) => {
-                console.log('response:',response)
-                setData("CPU Time:"+response.data.cpuTime+"  Memory:"+response.data.memory+"\n\n"+response.data.output)
+                console.log('response:', response)
+                setData("CPU Time:" + response.data.cpuTime + "  Memory:" + response.data.memory + "\n\n" + response.data.output)
             })
             .catch((error) => {
                 console.log('error:', error);
-                setData("If you are getting this error then\nPlz visit \nhttps://cors-anywhere.herokuapp.com/ \nand click on the \"Request temporary access to the demo server\"\nThen try to run the code again.")
+                setData(error)
             });
     };
 
@@ -195,7 +204,7 @@ const EditorPage = () => {
     let x = 0;
     let w = 0;
     const resizer_id = document.getElementById('resizeMe');
-    const editor_id= document.getElementById('editor');
+    const editor_id = document.getElementById('editor');
     const mouseDownHandler = (e) => {
         // Get the current mouse position
         x = e.clientX;
@@ -231,39 +240,37 @@ const EditorPage = () => {
         setMenuOpen(!menu_isOpen);
     };
 
-    const sendMsg = (event) => {
-        event.preventDefault();
-    };
 
     return (
         <div className='main'>
 
             <div className={`menu ${menu_isOpen ? 'open' : ''}`}>
-                {/* <ScrollToBottom className="message-container">
+                <button className="close-btn" onClick={toggleMenu}>x</button>
+                <ScrollToBottom className="message-container">
                     {messageList.map((messageContent) => {
                         return (
                             <div
                                 className="message"
-                                id={username === messageContent.author ? "you" : "other"}
+                                id={location.state?.username === messageContent.author ? "you" : "other"}
                             >
-                                <div>
-                                    <div className="message-content">
-                                        <p>{messageContent.message}</p>
-                                    </div>
-                                    <div className="message-meta">
-                                        <p id="time">{messageContent.time}</p>
-                                        <p id="author">{messageContent.author}</p>
-                                    </div>
+                                <div className='msg-div'>
+                                    <div className="author">{messageContent.author}</div>
+                                    <div className='message-content'>{messageContent.message}</div>
                                 </div>
                             </div>
                         );
                     })}
-                </ScrollToBottom> */}
-                <button className="close-btn" onClick={toggleMenu}>x</button>
-                <form onSubmit={sendMsg}>
-                    <input type="text" placeholder="Enter msg" />
-                    <button type="submit"><BsSendFill size={23} /></button>
-                </form>
+                </ScrollToBottom>
+                <div className='bottom_menu'>
+                    <input type="text" placeholder="Enter msg" value={currentMessage}
+                        onChange={(e) => {
+                            setCurrentMessage(e.target.value);
+                        }}
+                        onKeyPress={(e) => {
+                            e.key === "Enter" && sendMessage();
+                        }} />
+                    <button type="submit" onClick={sendMessage}><BsSendFill size={23} /></button>
+                </div>
             </div>
 
             <div className='upperPanel'>

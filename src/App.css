@@ -2,8 +2,66 @@
 .hidden{
   display: none;
 }
+
+/* chats css */
+
+.message-container {
+  display: flex;
+  margin-top: 30px;
+  width: 100%;
+  max-height: calc(100% - 90px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.message{
+  display: flex;
+  width: calc(100% - 10px);
+  margin-right: 5px;
+}
+
+.msg-div{
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 200px;
+  border-radius: 5px;
+  background-color: #C2AFF0;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+.message-content {
+  color: rgb(0, 0, 0);
+  display: flex;
+  align-items: center;
+  padding-right: 1px;
+  padding-left: 1px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+.author{
+  margin-top: 0px;
+  color: #512a82;
+  font-style: italic;
+  font-weight: bolder;
+}
+#other{
+  justify-content: flex-end;
+}
+#other .msg-div{
+  justify-content: flex-end;
+  right: 5px;
+  background-color: rgba(255, 255, 255, 0.844);
+}
+#other .author{
+  justify-content: flex-end;
+  right: 5px;
+  color: #000000;
+}
+
 /* menu css */
 .menu {
+  display: flex;
+  /* flex-direction: column; */
   position: fixed;
   top: 0;
   right: -300px; /* start offscreen */
@@ -38,7 +96,7 @@
   cursor: pointer;
 }
 
-form {
+.bottom_menu {
   position: absolute;
   bottom: 0px;
   display: flex;
