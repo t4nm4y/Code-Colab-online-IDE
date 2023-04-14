@@ -179,15 +179,16 @@ const EditorPage = () => {
                 'Access-Control-Allow-Origin': '*'
             }
         };
-        // axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
-        axios.post('https://api.jdoodle.com/v1/execute', program)
+        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
+       // axios.post('https://api.jdoodle.com/v1/execute', program)
             .then((response) => {
                 console.log('response:', response)
                 setData("CPU Time:" + response.data.cpuTime + "  Memory:" + response.data.memory + "\n\n" + response.data.output)
             })
             .catch((error) => {
                 console.log('error:', error);
-                setData(error)
+                //setData(error)
+                setData("If you're getting this error\nGo to \"https://cors-anywhere.herokuapp.com/\"\nAnd click on the following button:\"Request Temporary Access\"\nThen run the code again.")
             });
     };
 
