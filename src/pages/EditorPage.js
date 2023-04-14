@@ -7,6 +7,8 @@ import { initSocket } from '../socket';
 import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom';
 import { PlayFill } from 'react-bootstrap-icons';
 import axios from "axios";
+import { BsSendFill } from "react-icons/bs";
+import ScrollToBottom from "react-scroll-to-bottom"
 
 const EditorPage = () => {
     const socketRef = useRef(null);
@@ -20,6 +22,11 @@ const EditorPage = () => {
 
     const [codeOutput, setData] = useState(null);
     const [inputText, setInputText] = useState("");
+    const [menu_isOpen, setMenuOpen] = useState(false);
+
+    // for chats_____________________________________________________________
+    const [currentMessage, setCurrentMessage] = useState("");
+    const [messageList, setMessageList] = useState([]);
 
     const ref = useRef(null);
 
@@ -72,6 +79,16 @@ const EditorPage = () => {
                     });
                 }
             );
+
+            // listening for chat messages
+            socketRef.current.on(ACTIONS.RECEIVE_MSG, (data) => {
+                setMessageList((list) => [...list, data]);
+                toast(`New Message from ${data.author}`, {
+                    icon: '✉️',
+                  });
+                  console.log(data)
+            });
+
         };
         init();
 
@@ -82,6 +99,23 @@ const EditorPage = () => {
             socketRef.current.off(ACTIONS.DISCONNECTED);
         };
     }, []);
+
+    function sendMessage() {
+        if (currentMessage !== "") {
+            const messageData = {
+                room: roomId,
+                author: location.state?.username,
+                message: currentMessage,
+                // time:
+                //     new Date(Date.now()).getHours() +
+                //     ":" +
+                //     new Date(Date.now()).getMinutes(),
+            };
+            socketRef.current.emit(ACTIONS.SEND_MSG, messageData);
+            setMessageList((list) => [...list, messageData]);
+            setCurrentMessage("");
+        }
+    };
 
     const setLanguage = (e) => {
         editorRef.current.setOption("mode", e.target.value)
@@ -142,18 +176,18 @@ const EditorPage = () => {
         };
         const axiosConfig = {
             headers: {
-              'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*'
             }
-          };
-        axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
-        // axios.post('https://api.jdoodle.com/v1/execute', program, axiosConfig)
+        };
+        // axios.post('https://cors-anywhere.herokuapp.com/https://api.jdoodle.com/v1/execute', program)
+        axios.post('https://api.jdoodle.com/v1/execute', program)
             .then((response) => {
-                console.log('response:',response)
-                setData("CPU Time:"+response.data.cpuTime+"  Memory:"+response.data.memory+"\n\n"+response.data.output)
+                console.log('response:', response)
+                setData("CPU Time:" + response.data.cpuTime + "  Memory:" + response.data.memory + "\n\n" + response.data.output)
             })
             .catch((error) => {
                 console.log('error:', error);
-                setData("If you are getting this error then\nPlz visit \nhttps://cors-anywhere.herokuapp.com/ \nand click on the \"Request temporary access to the demo server\"\nThen try to run the code again.")
+                setData(error)
             });
     };
 
@@ -170,7 +204,7 @@ const EditorPage = () => {
     let x = 0;
     let w = 0;
     const resizer_id = document.getElementById('resizeMe');
-    const editor_id= document.getElementById('editor');
+    const editor_id = document.getElementById('editor');
     const mouseDownHandler = (e) => {
         // Get the current mouse position
         x = e.clientX;
@@ -201,8 +235,44 @@ const EditorPage = () => {
         return <Navigate to="/" />;
     }
 
+    //_____MENU___________________________________________________________________________________-
+    const toggleMenu = () => {
+        setMenuOpen(!menu_isOpen);
+    };
+
+
     return (
         <div className='main'>
+
+            <div className={`menu ${menu_isOpen ? 'open' : ''}`}>
+                <button className="close-btn" onClick={toggleMenu}>x</button>
+                <ScrollToBottom className="message-container">
+                    {messageList.map((messageContent) => {
+                        return (
+                            <div
+                                className="message"
+                                id={location.state?.username === messageContent.author ? "you" : "other"}
+                            >
+                                <div className='msg-div'>
+                                    <div className="author">{messageContent.author}</div>
+                                    <div className='message-content'>{messageContent.message}</div>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </ScrollToBottom>
+                <div className='bottom_menu'>
+                    <input type="text" placeholder="Enter msg" value={currentMessage}
+                        onChange={(e) => {
+                            setCurrentMessage(e.target.value);
+                        }}
+                        onKeyPress={(e) => {
+                            e.key === "Enter" && sendMessage();
+                        }} />
+                    <button type="submit" onClick={sendMessage}><BsSendFill size={23} /></button>
+                </div>
+            </div>
+
             <div className='upperPanel'>
                 <div className='options'>
                     <label class="visually-hidden" for="autoSizingSelect">Language: &nbsp;</label>
@@ -214,6 +284,10 @@ const EditorPage = () => {
                     </select>
                 </div>
                 <PlayFill className='runBtn' size={30} onClick={runCode} />
+                <button className="copy_codeBtn" onClick={copyCode}>Copy Code</button>
+                <button className={!menu_isOpen ? 'chat_btn' : 'hidden'} onClick={toggleMenu}>
+                    Chats
+                </button>
             </div>
             <div ref={ref} className="mainWrap">
                 <div id="editor" className="editorWrap">
@@ -270,9 +344,6 @@ const EditorPage = () => {
                             ))}
                         </div>
                     </div>
-                    <button className="btn_copyBtn" onClick={copyCode}>
-                        Copy Code
-                    </button>
                     <button className="btn_copyBtn" onClick={copyRoomId}>
                         Copy ROOM ID
                     </button>
