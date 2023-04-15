@@ -6,4 +6,6 @@ Its similar to Google Docs but for coding! (with syntax highlighting, online com
 
 Join a room with your friends and start coding!
 
+It also has chat feature!
+
 Check it out, its hosted here! : https://code-colab-tk.onrender.com/
