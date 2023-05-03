@@ -2,7 +2,9 @@
 .hidden{
   display: none;
 }
-
+button{
+  font-family: 'Outfit';
+}
 /* chats css */
 
 .message-container {
@@ -115,6 +117,7 @@ input[type="text"] {
 }
 
 button[type="submit"] {
+  font-family: 'Outfit';
   background-color: transparent;
   color: #C2AFF0;
   border: none;
@@ -147,8 +150,9 @@ button[type="submit"]:hover {
   height: 100%;
   left: 0;
   top: 0;
-  width: 5px;
+  width: 9px;
   background-color: #ffffff5f;
+  border-radius: 10px;
 }
 .MiddleDiv {
   display: flex;
@@ -336,6 +340,7 @@ button[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     width:150px;
+    height: 100vh - 20px;
   }
   .asideInner {
     flex: 1;

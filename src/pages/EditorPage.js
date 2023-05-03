@@ -208,7 +208,8 @@ const EditorPage = () => {
     const editor_id = document.getElementById('editor');
     const mouseDownHandler = (e) => {
         // Get the current mouse position
-        x = e.clientX;
+        // x = e.clientX;
+        x = e.clientX || e.touches[0].clientX;
 
         // Calculate the dimension of element
         const styles = window.getComputedStyle(resizer_id);
@@ -216,11 +217,14 @@ const EditorPage = () => {
         w = parseInt(styles.width);
         // Attach the listeners to `document`
         ref.current.addEventListener('mousemove', mouseMoveHandler);
+        ref.current.addEventListener('touchmove', mouseMoveHandler);
         ref.current.addEventListener('mouseup', mouseUpHandler);
+        ref.current.addEventListener('touchend', mouseUpHandler);
     };
 
     const mouseMoveHandler = (e) => {
-        const dx = x - e.clientX;
+        // const dx = x - e.clientX;
+        const dx = x - (e.clientX || e.touches[0].clientX);
         resizer_id.style.width = `${w + dx}px`;
         editor_id.style.width = `calc(100% - 170px - ${w + dx}px)`;
     };
@@ -228,7 +232,9 @@ const EditorPage = () => {
     const mouseUpHandler = () => {
         // Remove the handlers of `mousemove` and `mouseup`
         ref.current.removeEventListener('mousemove', mouseMoveHandler);
+        ref.current.removeEventListener('touchmove', mouseMoveHandler);
         ref.current.removeEventListener('mouseup', mouseUpHandler);
+        ref.current.removeEventListener('touchend', mouseUpHandler);
     };
 
     //if don't get the usename as state, then we will redirect it back to the home page
@@ -306,7 +312,7 @@ const EditorPage = () => {
                     />
                 </div>
                 <div id="resizeMe" className="MiddleDiv">
-                    <div className="resizer" onMouseDown={mouseDownHandler}> </div>
+                    <div className="resizer" onMouseDown={mouseDownHandler} onTouchStart={mouseDownHandler}> </div>
                     <div className="ResizableBox">
                         <div className="InputBox">
                             <textarea className='textArea'
