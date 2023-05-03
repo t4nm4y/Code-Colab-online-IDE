@@ -340,7 +340,7 @@ button[type="submit"]:hover {
     display: flex;
     flex-direction: column;
     width:150px;
-    height: 100vh - 20px;
+    height: 100% - 5px;
   }
   .asideInner {
     flex: 1;
@@ -352,7 +352,6 @@ button[type="submit"]:hover {
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    /* gap: 20px; */
     gap: 10px;
   }
   
