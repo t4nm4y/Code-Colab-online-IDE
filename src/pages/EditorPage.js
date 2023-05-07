@@ -38,7 +38,7 @@ const EditorPage = () => {
 
             function handleErrors(e) {
                 console.log('socket error', e);
-                toast.error('Socket connection failed, try again later.');
+                toast.error('Connection failed, Please check internet connection.');
                 reactNavigator('/');
             }
 
@@ -124,7 +124,7 @@ const EditorPage = () => {
             editorRef.current.setValue("#include <iostream>\nusing namespace std;\nint main() {\n  // Write C++ code here\n  cout << \"Hello world!\";\n  return 0;\n}")
         }
         else if (e.target.value === 'text/x-java') {
-            editorRef.current.setValue("class Func {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}")
+            editorRef.current.setValue("public class Func {\n  public static void main(String[] args) {\n    System.out.println(\"Hello, World!\");\n  }\n}")
         }
         else if (e.target.value === 'text/x-python') {
             editorRef.current.setValue("print(\"Hello world\")")
